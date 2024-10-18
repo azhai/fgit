@@ -147,7 +147,7 @@ func ParseCommandLine() CommandLine {
 	}
 
 	resolveSubCommand(r)
-	if r.PerhapsNeedInstrument == false {
+	if !r.PerhapsNeedInstrument {
 		return r
 	}
 
@@ -163,7 +163,7 @@ func ParseCommandLine() CommandLine {
 		r.PerhapsNeedInstrument = false
 	}
 
-	if r.PerhapsNeedInstrument == false {
+	if !r.PerhapsNeedInstrument {
 		return r
 	}
 
@@ -245,10 +245,8 @@ func parsePullCommand(r CommandLine) {
 		}
 
 		if opt == nil {
-			if isOptionArg(arg) == false {
-				if len(r.GitRemoteName) == 0 {
-					r.GitRemoteName = arg
-				}
+			if !isOptionArg(arg) && len(r.GitRemoteName) == 0 {
+				r.GitRemoteName = arg
 			} else {
 				panic(fmt.Errorf("[fgit] 不支持pull选项 '%s'", arg))
 			}
@@ -320,10 +318,8 @@ func parseFetchCommand(r CommandLine) {
 		}
 
 		if opt == nil {
-			if isOptionArg(arg) == false {
-				if len(r.GitRemoteName) == 0 {
-					r.GitRemoteName = arg
-				}
+			if !isOptionArg(arg) && len(r.GitRemoteName) == 0 {
+				r.GitRemoteName = arg
 			} else {
 				panic(fmt.Errorf("[fgit] 不支持fetch选项 '%s'", arg))
 			}
@@ -391,10 +387,8 @@ func parsePushCommand(r CommandLine) {
 		}
 
 		if opt == nil {
-			if isOptionArg(arg) == false {
-				if len(r.GitRemoteName) == 0 {
-					r.GitRemoteName = arg
-				}
+			if !isOptionArg(arg) && len(r.GitRemoteName) == 0 {
+				r.GitRemoteName = arg
 			} else {
 				panic(fmt.Errorf("[fgit] 不支持push选项 '%s'", arg))
 			}
@@ -474,15 +468,13 @@ func parseGitCloneCommandLine(r CommandLine) {
 		if opt != nil {
 			if arg == "-o" || arg == "--origin" {
 				r.GitRemoteName = argValue
-			} else if arg == "--" {
-				if len(argValue) > 0 {
-					r.ArgIndexOfGitURLText = i
-					r.GitURLText = argValue
-				}
+			} else if arg == "--" && len(argValue) > 0 {
+				r.ArgIndexOfGitURLText = i
+				r.GitURLText = argValue
 			} else if opt.Name == "--recursive" || opt.Name == "----recurse-submodules" {
 				panic(fmt.Errorf("[fgit] 不支持clone选项 '%s'", opt.Name))
 			}
-		} else if isOptionArg(arg) == false {
+		} else if !isOptionArg(arg) {
 			if len(r.GitURLText) == 0 {
 				r.ArgIndexOfGitURLText = i
 				r.GitURLText = arg

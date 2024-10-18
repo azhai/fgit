@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"path/filepath"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/mitchellh/go-homedir"
@@ -18,7 +16,8 @@ const (
 )
 
 func init() {
-	rand.Seed(time.Now().UnixNano()) //将时间戳设置成种子数
+	// 删除 rand.Seed 调用
+	// 如果需要特定的随机序列，请使用 rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
 // AccountT ...

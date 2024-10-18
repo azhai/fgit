@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/pkg/errors"
@@ -60,7 +59,7 @@ func RemoveFile(path string) {
 
 // ReadFile ...
 func ReadFile(path string) []byte {
-	r, err := ioutil.ReadFile(path)
+	r, err := os.ReadFile(path)
 	if err != nil {
 		panic(errors.Wrapf(err, "读取文件失败: %s", path))
 	}
@@ -69,7 +68,7 @@ func ReadFile(path string) []byte {
 
 // WriteFile ...
 func WriteFile(path string, data []byte) {
-	err := ioutil.WriteFile(path, data, 0x777)
+	err := os.WriteFile(path, data, 0777)
 	if err != nil {
 		panic(errors.Wrapf(err, "写入文件失败: %s", path))
 	}

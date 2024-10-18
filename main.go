@@ -48,7 +48,7 @@ func main() {
 		log.Printf("[fgit] 命令行1: %s\n", JSONPretty(cmdline))
 	}
 
-	if cmdline.PerhapsNeedInstrument == false {
+	if !cmdline.PerhapsNeedInstrument {
 		if Debug {
 			log.Println("[fgit] 无需设置代理")
 		}
@@ -82,7 +82,7 @@ func main() {
 		panic(fmt.Errorf("fgit不支持%s，仅支持https", gitURL.Scheme))
 	}
 
-	if cmdline.UseProxy == false && len(gitURL.User.Username()) > 0 {
+	if !cmdline.UseProxy && len(gitURL.User.Username()) > 0 {
 		cmdline.UseProxy = true
 
 		if Debug {
